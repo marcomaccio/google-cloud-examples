@@ -8,15 +8,62 @@
     <artifactId>google-cloud-endpoint</artifactId>
 
     <properties>
-        <app.id>name-marmac-tutorials-gce</app.id>
+        <app.id>name-marmac-gappeng-tutorial</app.id>
         <app.version>1</app.version>
-        <appengine.version>1.9.22</appengine.version>
-        <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
+        <appengine.version>1.9.23</appengine.version>
+        <gcloud.plugin.version>1.9.17a</gcloud.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
 
+        <slf4j-api.version>1.7.12</slf4j-api.version>
+        <slf4j-log4j12.version>1.7.12</slf4j-log4j12.version>
+        <log4j.version>1.2.17</log4j.version>
+        <junit.version>4.12</junit.version>
+
         <servlet-api.version>2.5</servlet-api.version>
+        <!-- Plugin Versions -->
+        <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+        <maven-clean-plugin.version>2.6</maven-clean-plugin.version>
+        <maven-install-plugin.version>2.5</maven-install-plugin.version>
+        <maven-deploy-plugin.version>2.8</maven-deploy-plugin.version>
+        <maven-release-plugin.version>2.4.1</maven-release-plugin.version>
+        <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+        <maven-dependency-plugin.version>2.7</maven-dependency-plugin.version>
+        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-site-plugin.version>3.4</maven-site-plugin.version>
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
+        <maven-scm-plugin.version>1.9.2</maven-scm-plugin.version>
+        <maven-scm-providers-jgit.version>1.9.2</maven-scm-providers-jgit.version>
+        <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
+        <maven-graph-plugin.version>1.10</maven-graph-plugin.version>
+        <maven-dependency-plugin.version>2.7</maven-dependency-plugin.version>
+        <maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
+        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+        <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
+        <maven-failsafe-plugin.version>2.15</maven-failsafe-plugin.version>
+
+        <maven-jaxb2-plugin.version>0.8.3</maven-jaxb2-plugin.version>
+        <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
+        <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+        <maven-war-plugin.version>2.5</maven-war-plugin.version>
+
+        <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
+        <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
+        <maven-pmd-plugin.version>3.2</maven-pmd-plugin.version>
+        <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
+
+        <umlgraph.version>5.6.6</umlgraph.version>
+
+        <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
+        <jdepend-maven-plugin.version>2.0-beta-2</jdepend-maven-plugin.version>
+        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.2.201409121644</jacoco-maven-plugin.version>
+
+        <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
+        <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
 
     </properties>
 
@@ -46,6 +93,24 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -82,7 +147,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.1</version>
+                <version>${versions-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -93,19 +158,21 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <version>3.1</version>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.5</version>
+                <version>${maven-war-plugin.version}</version>
                 <configuration>
                     <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
                     <webResources>
@@ -121,6 +188,7 @@
                     </webResources>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
@@ -145,6 +213,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
               <groupId>com.google.appengine</groupId>
               <artifactId>gcloud-maven-plugin</artifactId>
@@ -153,6 +222,7 @@
                 <set_default>true</set_default>
               </configuration>
             </plugin>
+
         </plugins>
     </build>
 
