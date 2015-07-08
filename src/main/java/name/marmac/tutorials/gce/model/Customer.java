@@ -1,29 +1,65 @@
 package name.marmac.tutorials.gce.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by marcomaccio on 17/06/2015.
  */
-public class Customer {
+public class Customer implements Serializable {
 
-    private String firstname;
-    private String lastname;
 
+
+    private String  firstname;
+    private String  lastname;
+    private String  customerId;
+
+    /**
+     *
+     * @return
+     */
     public String getFirstname() {
         return firstname;
     }
 
+    /**
+     *
+     * @param firstname
+     */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLastname() {
         return lastname;
     }
 
+    /**
+     *
+     * @param lastname
+     */
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    /**
+     *
+     * @param customerId
+     */
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     @Override
@@ -45,6 +81,7 @@ public class Customer {
         return "Customer{" +
                 "firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", customerId='" + customerId + '\'' +
                 '}';
     }
 }
