@@ -7,6 +7,79 @@
     <groupId>name.marmac.tutorials.gce</groupId>
     <artifactId>google-cloud-endpoint</artifactId>
 
+    <name>GCE @ WORK :: GOOGLE CLOUD ENDPOINT TUTORIAL</name>
+    <description>Tutorials to present various aspect of creating Google Cloud Endpoint and Google Cloud Application</description>
+    <url>http://marcomaccio.github.io/google-cloud-examples/</url>
+
+    <organization>
+    <name>MARMAC</name>
+    <url>http://www.marmac.name</url>
+    </organization>
+
+    <inceptionYear>2015</inceptionYear>
+
+    <developers>
+        <developer>
+            <id>marmac</id>
+            <name>Marco Maccio</name>
+            <roles>
+                <role>System Architect</role>
+                <role>Software Designer</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:marcomaccio/google-cloud-examples.git</connection>
+        <developerConnection>scm:git:git@github.com:marcomaccio/google-cloud-examples.git</developerConnection>
+        <url>https://github.com/marcomaccio/google-cloud-examples</url>
+
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>marmac-m2-repository-snapshot</id>
+            <name>MARMAC Maven 2 Repository Snapshot</name>
+            <url>http://repo.maccio-ch.homelinux.net/content/repositories/snapshots/</url>
+            <uniqueVersion>false</uniqueVersion>
+            <layout>default</layout>
+        </snapshotRepository>
+        <repository>
+            <id>marmac-m2-repository-release</id>
+            <name>MARMAC Maven 2 Repository Release</name>
+            <url>http://repo.maccio-ch.homelinux.net/content/repositories/releases/</url>
+            <uniqueVersion>false</uniqueVersion>
+            <layout>default</layout>
+        </repository>
+        <site>
+            <id>marmac-github-docs-website</id>
+            <url>https://github.com/marcomaccio/google-cloud-examples/tree/gh-pages</url>
+        </site>
+    </distributionManagement>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/marcomaccio/google-cloud-examples/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://ci.maccio-ch.homelinux.net/view/GOOGLE-AppEngine/</url>
+        <notifiers>
+          <notifier>
+            <type>mail</type>
+            <sendOnError>true</sendOnError>
+            <sendOnFailure>true</sendOnFailure>
+            <sendOnSuccess>false</sendOnSuccess>
+            <sendOnWarning>false</sendOnWarning>
+            <configuration>
+              <address>marco.maccio@marmac.name</address>
+            </configuration>
+          </notifier>
+        </notifiers>
+    </ciManagement>
+
     <properties>
         <app.id>name-marmac-gappeng-tutorial</app.id>
         <app.version>1</app.version>
