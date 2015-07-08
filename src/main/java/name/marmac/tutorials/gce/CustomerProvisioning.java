@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
   * Add your first API methods in this class, or you may create another class. In that case, please
@@ -26,9 +27,9 @@ import java.util.ArrayList;
                                     packagePath=""))
 public class CustomerProvisioning {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(CustomerProvisioning.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(CustomerProvisioning.class);
 
-    public static ArrayList<Customer> customers = new ArrayList<Customer>();
+    private static final List<Customer> customers = new ArrayList<Customer>();
 
     /**
      *
@@ -40,11 +41,13 @@ public class CustomerProvisioning {
     public Customer getCustomer(@Named("firstname") String firstname,
                                 @Named("lastname") String lastname) throws NotFoundException {
 
+        LOGGER.debug("Method getCustomer has been called");
         Customer customer = new Customer();
 
         customer.setFirstname(firstname);
         customer.setLastname(lastname);
 
+        LOGGER.debug("returning " + customer.toString());
         return customer;
     }
 
@@ -53,7 +56,10 @@ public class CustomerProvisioning {
      * @return
      */
     @ApiMethod(name = "getCustomers", httpMethod = "GET")
-    public ArrayList<Customer> listCustomer() {
+    public List<Customer> listCustomer() {
+
+        LOGGER.debug("Method getCustomers has been called");
+
         return customers;
     }
 
@@ -63,6 +69,7 @@ public class CustomerProvisioning {
                                 @Named("lastname") String lastname,
                                 @Named("customerId") String customerId) throws NotFoundException {
 
+        LOGGER.debug("Method addCustomer has been called");
 
         Customer customer = new Customer();
         customer.setFirstname(firstname);
@@ -79,6 +86,7 @@ public class CustomerProvisioning {
      */
     @ApiMethod(name = "deleteCustomer", httpMethod = "DELETE")
     public void deleteCustomer(@Named("id") Long id) throws NotFoundException {
+        LOGGER.debug("Method deleteCustomer has been called");
 
     }
 }
