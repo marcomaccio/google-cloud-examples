@@ -11,9 +11,13 @@
     <description>Tutorials to present various aspect of creating Google Cloud Endpoint and Google Cloud Application</description>
     <url>http://marcomaccio.github.io/google-cloud-examples/</url>
 
+    <prerequisites>
+        <maven>3.1.0</maven>
+    </prerequisites>
+
     <organization>
-    <name>MARMAC</name>
-    <url>http://www.marmac.name</url>
+        <name>MARMAC</name>
+        <url>http://www.marmac.name</url>
     </organization>
 
     <inceptionYear>2015</inceptionYear>
@@ -87,6 +91,9 @@
         <gcloud.plugin.version>1.9.17a</gcloud.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <source.java.compliancy.version>1.7</source.java.compliancy.version>
+        <target.java.compliancy.version>1.7</target.java.compliancy.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
 
         <slf4j-api.version>1.7.12</slf4j-api.version>
@@ -112,37 +119,42 @@
         <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
         <maven-graph-plugin.version>1.10</maven-graph-plugin.version>
         <maven-dependency-plugin.version>2.7</maven-dependency-plugin.version>
-        <maven-jxr-plugin.version>2.3</maven-jxr-plugin.version>
-        <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
-        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
-        <maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
-        <maven-failsafe-plugin.version>2.15</maven-failsafe-plugin.version>
+        <maven-jxr-plugin.version>2.5</maven-jxr-plugin.version>
+        <maven-project-info-reports-plugin.version>2.8</maven-project-info-reports-plugin.version>
+
+        <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+        <maven-surefire-report-plugin.version>2.18.1</maven-surefire-report-plugin.version>
+        <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
 
         <maven-jaxb2-plugin.version>0.8.3</maven-jaxb2-plugin.version>
         <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-        <maven-war-plugin.version>2.5</maven-war-plugin.version>
+        <maven-war-plugin.version>2.6</maven-war-plugin.version>
 
         <maven-changes-plugin.version>2.11</maven-changes-plugin.version>
         <maven-changelog-plugin.version>2.3</maven-changelog-plugin.version>
         <maven-pmd-plugin.version>3.2</maven-pmd-plugin.version>
-        <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
+
+        <versions-maven-plugin.version>2.2</versions-maven-plugin.version>
+        <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
 
         <umlgraph.version>5.6.6</umlgraph.version>
 
         <taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
-        <jdepend-maven-plugin.version>2.0-beta-2</jdepend-maven-plugin.version>
-        <findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
-        <jacoco-maven-plugin.version>0.7.2.201409121644</jacoco-maven-plugin.version>
+        <jdepend-maven-plugin.version>2.0</jdepend-maven-plugin.version>
+        <findbugs-maven-plugin.version>3.0.1</findbugs-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
 
         <sonar-maven-plugin.version>2.6</sonar-maven-plugin.version>
         <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
 
-    </properties>
+        <build.profile.id>dev</build.profile.id>
+        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
+        <jacoco.ut.execution.data.file>${project.build.directory}/coverage-reports/jacoco-ut.exec</jacoco.ut.execution.data.file>
+        <skip.integration.tests>true</skip.integration.tests>
+        <skip.unit.tests>false</skip.unit.tests>
 
-    <prerequisites>
-        <maven>3.1.0</maven>
-    </prerequisites>
+    </properties>
 
     <dependencies>
         <!-- Compile/runtime dependencies -->
@@ -216,6 +228,38 @@
     <build>
         <!-- for hot reload of the web application-->
         <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+
+        <filters>
+            <filter>profiles/${build.profile.id}/config.properties</filter>
+        </filters>
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                  <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                  <include>**/*</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/integration-test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                  <include>**/*</include>
+                </includes>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -233,12 +277,49 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${build-helper-maven-plugin.version}</version>
+                <executions>
+                    <!-- States that the plugin's add-test-source goal is executed at generate-test-sources phase. -->
+                    <execution>
+                        <id>add-integration-test-sources</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Configures the source directory of integration tests. -->
+                            <sources>
+                                <source>src/integration-test/java</source>
+                            </sources>
+
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-integration-test-resources</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>add-test-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>src/integration-test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${source.java.compliancy.version}</source>
+                    <target>${target.java.compliancy.version}</target>
                 </configuration>
             </plugin>
 
@@ -284,16 +365,141 @@
                             <goal>endpoints_get_discovery_doc</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>start-gae</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>devserver_start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-gae</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>devserver_stop</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
             <plugin>
-              <groupId>com.google.appengine</groupId>
-              <artifactId>gcloud-maven-plugin</artifactId>
-              <version>${gcloud.plugin.version}</version>
-              <configuration>
-                <set_default>true</set_default>
-              </configuration>
+                <groupId>com.google.appengine</groupId>
+                <artifactId>gcloud-maven-plugin</artifactId>
+                <version>${gcloud.plugin.version}</version>
+                <configuration>
+                    <set_default>true</set_default>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <!-- Skips unit tests if the value of skip.unit.tests property is true -->
+                    <skipTests>${skip.unit.tests}</skipTests>
+                    <!-- Excludes integration tests when unit tests are run. ß-->
+                    <excludes>
+                        <exclude>**/IT*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <!--
+                        Prepares the property pointing to the JaCoCo runtime agent which
+                        is passed as VM argument when Maven the Surefire plugin is executed.
+                    -->
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <!--
+                                Sets the name of the property containing the settings
+                                for JaCoCo runtime agent.
+                            -->
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Ensures that the code coverage report for unit tests is created after
+                        unit tests have been run.
+                    -->
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                            <!-- Sets the output directory for the code coverage report. -->
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                    <!--
+                        Prepares the property pointing to the JaCoCo runtime agent which
+                        is passed as VM argument when Maven the Failsafe plugin is executed.
+                    -->
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                            <!--
+                                Sets the name of the property containing the settings
+                                for JaCoCo runtime agent.
+                            -->
+                            <propertyName>failsafeArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Ensures that the code coverage report for integration tests after
+                        integration tests have been run.
+                    -->
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Sets the path to the file which contains the execution data. -->
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                            <!-- Sets the output directory for the code coverage report. -->
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                        </configuration>
+                    </execution>
+
+                </executions>
             </plugin>
 
         </plugins>
@@ -413,8 +619,9 @@
             </plugin>
 
             <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>sonar-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${sonar-maven-plugin.version}</version>
             </plugin>
 
             <plugin>
@@ -442,5 +649,32 @@
         </plugins>
 
     </reporting>
+
+    <profiles>
+        <profile>
+            <id>all-tests</id>
+            <properties>
+                <build.profile.id>all-tests</build.profile.id>
+                <!-- All tests are run. -->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>false</skip.unit.tests>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+        </profile>
+
+        <profile>
+            <id>integration-test</id>
+            <properties>
+                <!-- Used to locate the profile specific configuration file. -->
+                <build.profile.id>integration-test</build.profile.id>
+                <!-- Only integration tests are run. -->
+                <skip.integration.tests>false</skip.integration.tests>
+                <skip.unit.tests>true</skip.unit.tests>
+            </properties>
+        </profile>
+    </profiles>
+
 
 </project>
