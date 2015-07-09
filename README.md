@@ -31,6 +31,9 @@ A skeleton application for Google Cloud Endpoints in Java.
     1. You also need to supply the web client ID you have registered
        in the [APIs Console][4] to your client of choice (web, Android,
        iOS).
+       
+   
+1. Build with `mvn -Pall-tests clean install`       
 
 1. Run the application with `mvn appengine:devserver`, and ensure it's
    running by visiting your local server's api explorer's address (by
