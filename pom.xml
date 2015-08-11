@@ -87,8 +87,8 @@
     <properties>
         <app.id>name-marmac-gappeng-tutorial</app.id>
         <app.version>1</app.version>
-        <appengine.version>1.9.23</appengine.version>
-        <gcloud.plugin.version>1.9.17a</gcloud.plugin.version>
+        <appengine.version>1.9.24</appengine.version>
+        <gcloud.plugin.version>2.0.9.72.v20150804</gcloud.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -500,6 +500,12 @@
                     </execution>
 
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${maven-site-plugin.version}</version>
             </plugin>
 
         </plugins>
